@@ -19,14 +19,16 @@ module RailsAdmin
       end
 
       def get(id)
+        AbstractObject.new(model.find(id))
         AbstractObject.new(model.find(id) || Mongoid::Errors::DocumentNotFound.new)
       rescue => e
-        raise e if %w(
-          Mongoid::Errors::DocumentNotFound
-          Mongoid::Errors::InvalidFind
-          Moped::Errors::InvalidObjectId
-          BSON::InvalidObjectId
-        ).exclude?(e.class.to_s)
+        return nil
+        # raise e if %w(
+        #   Mongoid::Errors::DocumentNotFound
+        #   Mongoid::Errors::InvalidFind
+        #   Moped::Errors::InvalidObjectId
+        #   BSON::InvalidObjectId
+        # ).exclude?(e.class.to_s)
       end
 
       def scoped
